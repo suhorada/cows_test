@@ -16,4 +16,4 @@ If the terms of reference meant the restriction on "[" and "]" only for arrays, 
 2. Run 'node src/index.js'
 
 P.S
-There are 3 sets of test data in index.js, you can increase the number of operations as you wish, in order to quickly switch and test different solutions, comment out the necessary parts of the code - in the block '// using array' the solution with arrays, '// without arrays '- linked list,' // using custom array '- objects
+There are 3 sets of test data in index.js, you can increase the number of operations as you wish, in order to quickly switch and test different solutions, comment out the necessary parts of the code.
