@@ -13,7 +13,7 @@ If the terms of reference meant the restriction on "[" and "]" only for arrays, 
 
 ## How to start project
 1. Clone repository
-2. Run 'node src/index.js'
+2. Run 'node index.js'
 
 P.S
 There are 3 sets of test data in index.js, you can increase the number of operations as you wish, in order to quickly switch and test different solutions, comment out the necessary parts of the code.
