@@ -23,23 +23,13 @@ class List {
     if (position < 0 || position > this.length) {
       return "Incorrect value of position";
     }
-
     let node = new Node(value);
-
     if (position === 0) {
       node.next = this.head;
       this.head = node;
     } else {
       let current = this.head;
-      let prev = null;
-      let index = 0;
-
-      while (index < position) {
-        prev = current;
-        current = current.next;
-        index++;
-      }
-
+      let { prev } = this.runToPosition(position, current);
       prev.next = node;
       node.next = current;
     }
@@ -51,15 +41,12 @@ class List {
     if (position < 0 || position > this.length) {
       return "Incorrect value of position";
     }
-
     let current = this.head;
     let index = 0;
-
     while (index < position) {
       current = current.next;
       index++;
     }
-
     return current.data;
   }
 
@@ -67,46 +54,39 @@ class List {
     if (position < 0 || position > this.length) {
       return "Incorrect value of position";
     }
-
     let current = this.head;
-
     if (position === 0) {
       this.head = current.next;
     } else {
-      let prev = null;
-      let index = 0;
-
-      while (index < position) {
-        prev = current;
-        current = current.next;
-        index++;
-      }
-
+      let { prev } = this.runToPosition(position, current);
       prev.next = current.next;
     }
-
     this.length--;
     return current.data;
+  }
+
+  runToPosition(position, current) {
+    let prev = null;
+    let index = 0;
+    while (index < position) {
+      prev = current;
+      current = current.next;
+      index++;
+    }
+    return { prev, current };
   }
 
   getIndexOfById(id) {
     let current = this.head;
     let index = 0;
-
     while (current) {
       if (current.data.id === id) {
         return index;
       }
-
       current = current.next;
       index++;
     }
-
     return -1;
-  }
-
-  removeElementByValue(value) {
-    return this.removeFromPosition(this.getIndexOf(value));
   }
 
   getLength() {
@@ -138,10 +118,37 @@ class Farm {
   giveBirth(parent, id, name) {
     // Id must be unique
     if (this.cows.getIndexOfById(id) !== -1) {
-      return "This id already used";
+      console.log("LOG: This id already used");
+      return false;
     }
     let cow = new Cow(parent, id, name);
     this.cows.addToTheEnd(cow);
+    console.log("LOG: A new cow is born");
+  }
+
+  endLife(id) {
+    // First cow on farm is unkillable
+    if (id === 0) {
+      console.log("LOG: This cow must be always alive!");
+      return false;
+    }
+    this.cows.removeFromPosition(this.cows.getIndexOfById(id));
+    console.log(`LOG: Cow with Id ${id} died :(`);
+    this.diedCows++;
+    return true;
+  }
+
+  print() {
+    let current = this.cows.head;
+    console.log(
+      `\nNow at farm ${this.cows.length} cows\nDied all the time ${this.diedCows}\n\nAll cows now:`
+    );
+    while (current) {
+      console.log(
+        `Name '${current.data.name}', id ${current.data.id} ${current.data.parent !== null ? `with parent id ${current.data.parent}` : ''}`
+      );
+      current = current.next;
+    }
   }
 }
 
@@ -150,6 +157,7 @@ class Cow {
     this.name = name;
     this.id = id;
     this.parent = parent;
+    this.sex = "Female";
   }
 }
 
