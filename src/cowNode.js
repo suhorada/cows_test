@@ -95,8 +95,8 @@ class List {
   find(cb) {
     let current = this.head;
     for (let i = 0; i < this.arrayLength; i++) {
-      if(cb(current)) {
-        return current;
+      if (cb(current.data)) {
+        return current.data;
       }
       current = current.next;
     }
@@ -105,7 +105,7 @@ class List {
 
   forEach(cb) {
     let current = this.head;
-    for (let i = 0; i < this.arrayLength; i++) {
+    while (current !== null) {
       cb(current.data);
       current = current.next;
     }
@@ -114,9 +114,30 @@ class List {
   print() {
     let current = this.head;
     while (current !== null) {
-      console.log(current.data);
+      console.log(current);
       current = current.next;
     }
+  }
+
+  filter(cb) {
+    let onHead = true;
+    let current = this.head;
+    let prev = this.head;
+    while (current.next !== null) {
+      if (cb(current.data) && onHead) {
+        current = current.next;
+        onHead = false;
+      } else if (cb(current.data)) {
+        current = current.next;
+        prev = prev.next;
+      } else {
+        current = current.next;
+        prev.next = current;
+        this.arrayLength--;
+      }
+    }
+
+    return this;
   }
 }
 
@@ -127,61 +148,4 @@ class Node {
   }
 }
 
-class Farm {
-  constructor() {
-    this.cows = new List();
-    this.diedCows = 0;
-  }
-
-  giveBirth(parent, id, name) {
-    // Id must be unique
-    if (this.cows.getIndexOfById(id) !== -1) {
-      console.log("LOG: This id already used");
-      return false;
-    }
-    let cow = new Cow(parent, id, name);
-    this.cows.push(cow);
-    console.log("LOG: A new cow is born");
-  }
-
-  endLife(id) {
-    // First cow on farm is unkillable
-    if (id === 0) {
-      console.log("LOG: This cow must be always alive!");
-      return false;
-    }
-    this.cows.removeFromPosition(this.cows.getIndexOfById(id));
-    console.log(`LOG: Cow with Id ${id} died :(`);
-    this.diedCows++;
-    return true;
-  }
-
-  print() {
-    let current = this.cows.head;
-    console.log(
-      `\nNow at farm ${this.cows.arrayLength} cows\nDied all the time ${this.diedCows}\n\nAll cows now:`
-    );
-    while (current) {
-      console.log(
-        `Name '${current.data.name}', id ${current.data.id} ${
-          current.data.parent !== null
-            ? `with parent id ${current.data.parent}`
-            : ""
-        }`
-      );
-      current = current.next;
-    }
-  }
-}
-
-class Cow {
-  constructor(parent, id, name) {
-    this.name = name;
-    this.id = id;
-    this.parent = parent;
-    this.sex = "Female";
-  }
-}
-
-// module.exports = Farm;
 module.exports = List;
