@@ -47,6 +47,7 @@ class ObjectBasedArray {
     for(let key in this.array) {
       if(!cb(this.array[key])) {
         delete this.array[key];
+        this.arrayLength--;
       }
     }
     return this;
