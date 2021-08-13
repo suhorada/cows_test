@@ -5,54 +5,52 @@ class Farm {
 
   giveBirth(parentId, childId, childName) {
     if (this.allCows.find((el) => el.id === childId)) {
-      console.log("This Id is already exists");
+      console.log("LOG: This Id is already exists");
     } else if (!this.allCows.find((el) => el.id === parentId)) {
-      console.log("This parent id is wrong");
+      console.log("LOG: This parent id is wrong");
     } else {
-      this.allCows.push({
-        name: childName,
-        parentId,
-        id: childId,
-      });
-      this.newCows++;
-      console.log(`Cow '${childName}' created with parent id ${parentId}`);
+      this.allCows.push(new Cow(parentId, childId, childName));
+      console.log(`LOG: Cow '${childName}' created with parent id ${parentId}`);
     }
   }
 
   endLife(id) {
     if (id === 0) {
-      console.log("This cow unkillable");
+      console.log("LOG: This cow unkillable");
     } else {
-        const lengthBefore = this.allCows.length;
-        this.allCows = this.allCows.filter((el) => el.id !== id);
-      if(lengthBefore !== this.allCows.length) {
+      const lengthBefore = this.allCows.length;
+      this.allCows = this.allCows.filter((el) => el.id !== id);
+      if (lengthBefore !== this.allCows.length) {
         this.diedCows++;
+        console.log(`LOG: Cow with id ${id} was died :(`);
       } else {
-        console.log("Cow not found");
+        console.log("LOG: Cow not found");
       }
     }
   }
 
   print() {
-    console.log("All cows on this moment:");
+    console.log(
+      `\nTotal data:\nWas born ${this.allCows.length + this.diedCows} cows, died ${
+        this.diedCows
+      }, total growth/decline ${this.allCows.length}`
+    );
+    console.log("\nAll cows on this moment:");
     this.allCows.forEach((cow) =>
       console.log(
         `'${cow.name}, with id ${cow.id} and parent id ${cow.parentId}`
       )
     );
-    let growth = 0;
-    growth = this.newCows - this.diedCows;
-    console.log(
-      `Was born ${this.newCows} cows, died ${this.diedCows}, total growth/decline ${growth}`
-    );
   }
 }
 
-module.exports = new Farm();
+class Cow {
+  constructor(parent, id, name) {
+    this.name = name;
+    this.id = id;
+    this.parent = parent;
+    this.sex = "Female";
+  }
+}
 
-// Farm.add(0, 1, 'Cow 1');
-// Farm.add(0, 2, 'Cow 2');
-// Farm.add(2, 3, 'Cow 3');
-// Farm.kill(1);
-// Farm.kill(0);
-// Farm.report(0, 50);
+module.exports = Farm;
