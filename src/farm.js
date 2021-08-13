@@ -1,7 +1,17 @@
+const LinkedList = require('./cowNode.js');
+const ObjectBasedArray = require("./cowCustomArray.js");
+
 class Farm {
-  constructor(type) {
+  constructor(type = Array) {
     this.cows = new type();
     this.diedCows = 0;
+  }
+
+  static object() {
+    return new Farm(ObjectBasedArray);
+  }
+  static list() {
+    return new Farm(LinkedList);
   }
 
   giveBirth(parentId, childId, childName) {
