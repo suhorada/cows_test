@@ -1,5 +1,5 @@
 const LinkedList = require('./cowNode.js');
-const ObjectBasedArray = require("./cowCustomArray.js");
+const ObjectBasedArray = require("./objectBasedArray.js");
 
 class Farm {
   constructor(type = Array) {
