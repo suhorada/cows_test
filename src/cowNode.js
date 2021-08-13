@@ -1,4 +1,3 @@
-// All helper methods needs to get our custom List more possibility for scaling
 class List {
   constructor(value) {
     this.head = value || null;
