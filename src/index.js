@@ -28,6 +28,9 @@ const farm = new Farm();
 
 farm.giveBirth(null, 0, "Immortal");
 farm.giveBirth(0, 1, "Cow1");
+farm.giveBirth(0, 1, "Cow1");
+farm.giveBirth(1, 2, "Cow1");
+farm.endLife(1);
 farm.print();
 // farm.giveBirth(0, 2, "Cow2");
 // farm.giveBirth(1, 3, "Cow3");

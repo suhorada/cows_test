@@ -5,18 +5,41 @@ class myArray {
   }
 
   push(data) {
+    if (data.id in this.array) {
+      console.log('LOG: This id already used'); 
+      return false;
+    }
     this.array[this.length] = data;
     this.length++;
+    console.log("LOG: A new cow is born");
   }
 
   findIndexOfById(id) {
-    
+    let index = 0;
+    for (let key in this.array) {
+      if (Number(this.array[key].id) === id) {
+        return index;
+      }
+      index++;
+    }
+    return -1;
   }
 
-  removeByIndex(index) {}
+  removeByIndex(index) {
+    if (this.array[index] !== undefined) {
+      delete this.array[index];
+      console.log(`LOG: Deleted ${index}`);
+    } else {
+      console.log("LOG: This index not found");
+    }
+  }
 
   getData() {
     return this.array;
+  }
+
+  getLength() {
+    return this.length;
   }
 }
 
@@ -31,7 +54,16 @@ class Farm {
     this.cows.push(cow);
   }
 
-  endLife(id) {}
+  endLife(id) {
+    if (id === 0) {
+      console.log('This cow is Immortal');
+    } else if (this.cows.findIndexOfById(id) !== -1) {
+      this.cows.removeByIndex(this.cows.findIndexOfById(id));
+      console.log(`LOG: Cow with id ${id} died :(`)
+    } else {
+      console.log(`LOG: Cow with id ${id} not found`)
+    }
+  }
 
   print() {
     const data = this.cows.getData();
@@ -41,9 +73,7 @@ class Farm {
     for (let key in data) {
       console.log(
         `Name '${data[key].name}', id ${data[key].id} ${
-          data[key].parent !== null
-            ? `with parent id ${data[key].parent}`
-            : ""
+          data[key].parent !== null ? `with parent id ${data[key].parent}` : ""
         }`
       );
     }
