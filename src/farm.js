@@ -1,6 +1,6 @@
 class Farm {
-  constructor() {
-    this.cows = new Array();
+  constructor(type) {
+    this.cows = new type();
     this.diedCows = 0;
   }
 

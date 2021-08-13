@@ -1,12 +1,12 @@
 class List {
   constructor(value) {
     this.head = value || null;
-    this.length = 0;
+    this.arrayLength = 0;
   }
 
-  addToTheEnd(value) {
+  push(value) {
     let node = new Node(value);
-    if (this.length === 0) {
+    if (this.arrayLength === 0) {
       this.head = node;
     } else {
       let current = this.head;
@@ -15,11 +15,11 @@ class List {
       }
       current.next = node;
     }
-    this.length++;
+    this.arrayLength++;
   }
 
   insertInPosition(position, value) {
-    if (position < 0 || position > this.length) {
+    if (position < 0 || position > this.arrayLength) {
       return "Incorrect value of position";
     }
     let node = new Node(value);
@@ -33,11 +33,11 @@ class List {
       node.next = current;
     }
 
-    this.length++;
+    this.arrayLength++;
   }
 
   getNodeByPosition(position) {
-    if (position < 0 || position > this.length) {
+    if (position < 0 || position > this.arrayLength) {
       return "Incorrect value of position";
     }
     let current = this.head;
@@ -50,7 +50,7 @@ class List {
   }
 
   removeFromPosition(position) {
-    if (position < 0 || position > this.length) {
+    if (position < 0 || position > this.arrayLength) {
       return "Incorrect value of position";
     }
     let current = this.head;
@@ -60,7 +60,7 @@ class List {
       let { prev } = this.runToPosition(position, current);
       prev.next = current.next;
     }
-    this.length--;
+    this.arrayLength--;
     return current.data;
   }
 
@@ -88,8 +88,27 @@ class List {
     return -1;
   }
 
-  getLength() {
-    return this.length;
+  get length() {
+    return this.arrayLength;
+  }
+
+  find(cb) {
+    let current = this.head;
+    for (let i = 0; i < this.arrayLength; i++) {
+      if(cb(current)) {
+        return current;
+      }
+      current = current.next;
+    }
+    return null;
+  }
+
+  forEach(cb) {
+    let current = this.head;
+    for (let i = 0; i < this.arrayLength; i++) {
+      cb(current.data);
+      current = current.next;
+    }
   }
 
   print() {
@@ -121,7 +140,7 @@ class Farm {
       return false;
     }
     let cow = new Cow(parent, id, name);
-    this.cows.addToTheEnd(cow);
+    this.cows.push(cow);
     console.log("LOG: A new cow is born");
   }
 
@@ -140,11 +159,15 @@ class Farm {
   print() {
     let current = this.cows.head;
     console.log(
-      `\nNow at farm ${this.cows.length} cows\nDied all the time ${this.diedCows}\n\nAll cows now:`
+      `\nNow at farm ${this.cows.arrayLength} cows\nDied all the time ${this.diedCows}\n\nAll cows now:`
     );
     while (current) {
       console.log(
-        `Name '${current.data.name}', id ${current.data.id} ${current.data.parent !== null ? `with parent id ${current.data.parent}` : ''}`
+        `Name '${current.data.name}', id ${current.data.id} ${
+          current.data.parent !== null
+            ? `with parent id ${current.data.parent}`
+            : ""
+        }`
       );
       current = current.next;
     }
@@ -160,4 +183,5 @@ class Cow {
   }
 }
 
-module.exports = Farm;
+// module.exports = Farm;
+module.exports = List;

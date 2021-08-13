@@ -1,7 +1,7 @@
-class myArray {
+class ObjectBasedArray {
   constructor() {
     this.array = {};
-    this.length = 0;
+    this.arrayLength = 0;
   }
 
   push(data) {
@@ -9,12 +9,12 @@ class myArray {
       console.log('LOG: This id already used'); 
       return false;
     }
-    this.array[this.length] = data;
-    this.length++;
+    this.array[this.arrayLength] = data;
+    this.arrayLength++;
     console.log("LOG: A new cow is born");
   }
 
-  findIndexOfById(id) {
+  getIndexOfById(id) {
     let index = 0;
     for (let key in this.array) {
       if (Number(this.array[key].id) === id) {
@@ -34,18 +34,33 @@ class myArray {
     }
   }
 
-  getData() {
+  find(cb) {
+    for(let key in this.array) {
+      if(cb(this.array[key])) {
+        return this.array[key];
+      }
+    }
+    return null;
+  }
+
+  forEach(cb) {
+    for(let key in this.array) {
+      cb(this.array[key]);
+    }
+  }
+
+  get data() {
     return this.array;
   }
 
-  getLength() {
-    return this.length;
+  get length() {
+    return this.arrayLength;
   }
 }
 
 class Farm {
   constructor() {
-    this.cows = new myArray();
+    this.cows = new ObjectBasedArray();
     this.diedCows = 0;
   }
 
@@ -57,8 +72,8 @@ class Farm {
   endLife(id) {
     if (id === 0) {
       console.log('This cow is Immortal');
-    } else if (this.cows.findIndexOfById(id) !== -1) {
-      this.cows.removeByIndex(this.cows.findIndexOfById(id));
+    } else if (this.cows.getIndexOfById(id) !== -1) {
+      this.cows.removeByIndex(this.cows.getIndexOfById(id));
       console.log(`LOG: Cow with id ${id} died :(`)
     } else {
       console.log(`LOG: Cow with id ${id} not found`)
@@ -66,9 +81,9 @@ class Farm {
   }
 
   print() {
-    const data = this.cows.getData();
+    const data = this.cows.data;
     console.log(
-      `\nNow at farm ${this.length} cows\nDied all the time ${this.diedCows}\n\nAll cows now:`
+      `\nNow at farm ${this.arrayLength} cows\nDied all the time ${this.diedCows}\n\nAll cows now:`
     );
     for (let key in data) {
       console.log(
@@ -89,4 +104,5 @@ class Cow {
   }
 }
 
-module.exports = Farm;
+// module.exports = Farm;
+module.exports = ObjectBasedArray;
