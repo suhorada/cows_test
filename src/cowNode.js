@@ -1,18 +1,12 @@
 // All helper methods needs to get our custom List more possibility for scaling
 class List {
-  constructor() {
-    this.head = new Cow(null, 0, "Unkillable Cow");
-    this.length = 1;
-    this.newCows = 0;
-    this.diedCows = 0;
+  constructor(value) {
+    this.head = value || null;
+    this.length = 0;
   }
 
-  giveBirth(parent, id, name) {
-    // Id must be unique
-    if (this.getIndexOfById(id) !== -1) {
-      return "This id already used";
-    }
-    let node = new Cow(parent, id, name);
+  addToTheEnd(value) {
+    let node = new Node(value);
     if (this.length === 0) {
       this.head = node;
     } else {
@@ -20,22 +14,18 @@ class List {
       while (current.next) {
         current = current.next;
       }
-      current.next = new Cow(parent, id, name);
+      current.next = node;
     }
-    this.newCows++;
     this.length++;
   }
 
-  // helper method, might be removed without func decline
-  insertInPosition(position, parent, id, name) {
+  insertInPosition(position, value) {
     if (position < 0 || position > this.length) {
       return "Incorrect value of position";
     }
-    // Id must be unique
-    if (this.getIndexOfById(id) !== -1) {
-      return "This id already used";
-    }
-    let node = new Cow(parent, id, name);
+
+    let node = new Node(value);
+
     if (position === 0) {
       node.next = this.head;
       this.head = node;
@@ -53,11 +43,11 @@ class List {
       prev.next = node;
       node.next = current;
     }
+
     this.length++;
   }
 
-  // helper method, might be removed without func decline
-  getCowByPosition(position) {
+  getNodeByPosition(position) {
     if (position < 0 || position > this.length) {
       return "Incorrect value of position";
     }
@@ -70,16 +60,13 @@ class List {
       index++;
     }
 
-    return current.value;
+    return current.data;
   }
 
-  // helper method, might be removed without func decline
   removeFromPosition(position) {
     if (position < 0 || position > this.length) {
       return "Incorrect value of position";
     }
-    // First cow on farm is unkillable
-    if (position === 0) return "This cow must be always alive!";
 
     let current = this.head;
 
@@ -94,11 +81,12 @@ class List {
         current = current.next;
         index++;
       }
+
       prev.next = current.next;
     }
-    this.diedCows++;
+
     this.length--;
-    return current.value;
+    return current.data;
   }
 
   getIndexOfById(id) {
@@ -106,47 +94,54 @@ class List {
     let index = 0;
 
     while (current) {
-      if (current.id === id) {
+      if (current.data.id === id) {
         return index;
       }
+
       current = current.next;
       index++;
     }
+
     return -1;
   }
 
-  endLife(id) {
-    // First cow on farm is unkillable
-    if (id === 0) return "This cow must be always alive!";
-    return this.removeFromPosition(this.getIndexOfById(id));
+  removeElementByValue(value) {
+    return this.removeFromPosition(this.getIndexOf(value));
   }
 
-  // helper method, might be removed without func decline
-  isEmpty() {
-    return this.length === 0;
-  }
-
-  // helper method, might be removed without func decline
   getLength() {
     return this.length;
   }
 
   print() {
-    console.log("Current alive cows:");
     let current = this.head;
     while (current) {
-      console.log(
-        `'${current.name}' with id ${current.id} and parent id ${current.parent}`
-      );
+      console.log(current.data);
       current = current.next;
     }
-    console.log(
-      `Total counts from farm creating:\nNew cows: ${
-        this.newCows
-      }\nDied cows: ${this.diedCows}\nGrowth/decline: ${
-        this.newCows - this.diedCows
-      }`
-    );
+  }
+}
+
+class Node {
+  constructor(value) {
+    this.data = value;
+    this.next = null;
+  }
+}
+
+class Farm {
+  constructor() {
+    this.cows = new List();
+    this.diedCows = 0;
+  }
+
+  giveBirth(parent, id, name) {
+    // Id must be unique
+    if (this.cows.getIndexOfById(id) !== -1) {
+      return "This id already used";
+    }
+    let cow = new Cow(parent, id, name);
+    this.cows.addToTheEnd(cow);
   }
 }
 
@@ -155,8 +150,7 @@ class Cow {
     this.name = name;
     this.id = id;
     this.parent = parent;
-    this.next = null;
   }
 }
 
-module.exports = new List();
+module.exports = Farm;
