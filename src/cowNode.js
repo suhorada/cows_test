@@ -11,7 +11,7 @@ class List {
       this.head = node;
     } else {
       let current = this.head;
-      while (current.next) {
+      while (current.next !== null) {
         current = current.next;
       }
       current.next = node;
@@ -79,7 +79,7 @@ class List {
   getIndexOfById(id) {
     let current = this.head;
     let index = 0;
-    while (current) {
+    while (current !== null) {
       if (current.data.id === id) {
         return index;
       }
@@ -95,7 +95,7 @@ class List {
 
   print() {
     let current = this.head;
-    while (current) {
+    while (current !== null) {
       console.log(current.data);
       current = current.next;
     }
