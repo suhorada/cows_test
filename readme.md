@@ -7,7 +7,7 @@ The project is designed as a test task
 Implement a 'farm' with the ability to add and remove cows, output a report in a readable form
 
 ## What was done
-Three files with different implementations: for the first part without restrictions on arrays needs only farm - "farm.js" with constructor of Array type, with restrictions - "cowNode.js" and "cowCustomArray.js", which must be used as type in Farm constructor.
+Three files with different implementations: for the first part without restrictions on arrays needs only farm - "farm.js" with empty constructor, with restrictions - "cowNode.js" and "cowCustomArray.js", which are used in static methods and Farm.[type] return a new farm of a certain type.
 
 If the terms of reference meant the restriction on "[" and "]" only for arrays, then both implementations are suitable, but if brackets cannot be used for objects too, then the cowCustomArray.js solution can be ignored
 
